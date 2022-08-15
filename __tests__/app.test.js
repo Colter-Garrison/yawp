@@ -26,6 +26,12 @@ describe('yawp POST, GET, and DELETE route tests', () => {
       email,
     });
   });
+
+  it('POST should sign in an existing user', async () => {
+    await request(app).post('/api/v1/users').send(testUser);
+    const resp = await request(app).post('/api/v1/users/sessions').send({ email: 'testemail@test.com', password: 'asdf' });
+    expect(resp.status).toBe(200);
+  })
   
   afterAll(() => {
     pool.end();
