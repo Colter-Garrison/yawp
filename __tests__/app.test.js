@@ -63,6 +63,15 @@ describe('yawp POST, GET, and DELETE route tests', () => {
       email: expect.any(String),
     });
   });
+
+  it('GET should show a list of restaurants', async () => {
+    const res = await agent.get('/api/v1/restaurants');
+    expect(res.body).toEqual(expect.arrayContaining([{
+      id: expect.any(String),
+      name: expect.any(String),
+      cuisine: expect.any(String),
+    }]));
+  });
   
   afterAll(() => {
     pool.end();

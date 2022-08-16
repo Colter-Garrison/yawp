@@ -25,3 +25,11 @@ CREATE TABLE reviews (
   restaurant_id BIGINT NOT NULL,
   user_id BIGINT NOT NULL
 );
+
+INSERT INTO restaurants(
+  name,
+  cuisine
+)
+VALUES 
+('Murphys', 'Diner'),
+('American Dream', 'Pizza');
