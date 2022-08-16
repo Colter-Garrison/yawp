@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const agent = request.agent(app);
 
 const testUser = {
   firstName: 'Tiesto',
@@ -41,6 +42,25 @@ describe('yawp POST, GET, and DELETE route tests', () => {
     expect(res.body).toEqual({
       message: 'You do not have access to view this page',
       status: 403,
+    });
+  });
+
+  it('GET should allow authenticated users to view a list of users', async () => {
+    const adminUser = {
+      firstName: 'Admin',
+      lastName: 'Boss',
+      email: 'admin',
+      password: 'asdf',
+    };
+    await agent.post('/api/v1/users').send(adminUser);
+    const res = await agent.get('/api/v1/users');
+    await agent.post('/api/v1/users/sessions').send(adminUser);
+    expect(res.status).toBe(200);
+    expect(res.body[0]).toEqual({
+      id: expect.any(String),
+      firstName: expect.any(String),
+      lastName: expect.any(String),
+      email: expect.any(String),
     });
   });
   
