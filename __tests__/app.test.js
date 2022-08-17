@@ -83,6 +83,22 @@ describe('yawp POST, GET, and DELETE route tests', () => {
       reviews: expect.any(Array),
     });
   });
+
+  it('POST should add a new review if user is signed in', async () => {
+    const review = {
+      stars: 5,
+      detail: 'YUMMY',
+    };
+    await agent.post('/api/v1/users').send(testUser);
+    const res = await agent.post('/api/v1/restaurants/1/reviews').send(review);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      restaurantId: '1',
+      userId: expect.any(String),
+      ...review,
+    });
+  });
   
   afterAll(() => {
     pool.end();
