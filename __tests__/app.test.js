@@ -72,6 +72,17 @@ describe('yawp POST, GET, and DELETE route tests', () => {
       cuisine: expect.any(String),
     }]));
   });
+
+  it('GET should return a restaurant by id with reviews', async () => {
+    const res = await request(app).get('/api/v1/restaurants/1');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: '1',
+      name: 'Murphys',
+      cuisine: 'Diner',
+      reviews: expect.any(Array),
+    });
+  });
   
   afterAll(() => {
     pool.end();
